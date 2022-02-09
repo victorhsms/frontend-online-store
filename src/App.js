@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Home from './Components/Home';
+import Cart from './Components/Cart';
 
 // import './App.css';
 
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
-      <div>
-        <form>
-          <input className="initialInput" />
-          <h1
-            data-testid="home-initial-message"
-          >
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </h1>
-        </form>
-      </div>
+
+      <BrowserRouter>
+        <Route exact path="/" component={ Home } />
+        <Route exact path="/cart" component={ Cart } />
+      </BrowserRouter>
+
     );
   }
 }
