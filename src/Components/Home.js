@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Products from './Products';
 // import PropTypes from 'prop-types';
 // import Cart from './Cart';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends Component {
   constructor() {
     super();
     this.state = {
       products: [],
+      inputValue: '',
+      searchResult: [],
     };
     this.handleRequest = this.handleRequest.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -22,13 +27,41 @@ class Home extends Component {
     this.setState({ products: response });
   }
 
+  async handleClick() {
+    const { inputValue } = this.state;
+    const requestApi = await getProductsFromCategoryAndQuery(undefined, inputValue);
+    this.setState({
+      searchResult: requestApi.results,
+    });
+  }
+
+  handleChange({ target }) {
+    this.setState({
+      [target.name]: target.value,
+    });
+  }
+
   render() {
-    const { products } = this.state;
+    const { products, inputValue, searchResult } = this.state;
 
     return (
       <div>
         <form>
-          <input className="initialInput" />
+          <input
+            className="initialInput"
+            data-testid="query-input"
+            name="inputValue"
+            value={ inputValue }
+            onChange={ this.handleChange }
+          />
+          <button
+            type="button"
+            data-testid="query-button"
+            onClick={ this.handleClick }
+          >
+            Pesquisar
+          </button>
+          <Products searchResult={ searchResult } />
           <h1
             data-testid="home-initial-message"
           >
