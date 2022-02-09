@@ -5,7 +5,7 @@ class Cart extends Component {
   render() {
     return (
       <div>
-        <p>Seu carrinho está vazio</p>
+        <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
       </div>
     );
   }
