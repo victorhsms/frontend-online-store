@@ -64,9 +64,6 @@ class Home extends Component {
 
   render() {
     const { products, inputValue, searchResult } = this.state;
-
-    console.log(searchResult);
-
     return (
       <div>
         <form>
