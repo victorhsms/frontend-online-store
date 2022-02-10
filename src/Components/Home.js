@@ -12,14 +12,24 @@ class Home extends Component {
       products: [],
       inputValue: '',
       searchResult: [],
+      cartList: [],
     };
+
     this.handleRequest = this.handleRequest.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleButton = this.handleButton.bind(this);
   }
 
   componentDidMount() {
     this.handleRequest();
+  }
+
+  handleButton({ target }) {
+    const { cartList } = this.state;
+    this.setState({
+      cartList: [...cartList, target.id],
+    });
   }
 
   async handleRequest() {
@@ -42,7 +52,7 @@ class Home extends Component {
   }
 
   render() {
-    const { products, inputValue, searchResult } = this.state;
+    const { products, inputValue, searchResult, cartList } = this.state;
 
     return (
       <div>
@@ -61,7 +71,11 @@ class Home extends Component {
           >
             Pesquisar
           </button>
-          <Products searchResult={ searchResult } />
+          <Products
+            searchResult={ searchResult }
+            cartList={ cartList }
+            handleButton={ this.handleButton }
+          />
           <h1
             data-testid="home-initial-message"
           >

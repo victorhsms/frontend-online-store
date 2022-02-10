@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Products extends Component {
   render() {
-    const { searchResult } = this.props;
+    const { searchResult, handleButton } = this.props;
     if (searchResult.length === 0) {
       return (<p>Nenhum produto foi encontrado</p>);
     }
@@ -19,6 +19,14 @@ class Products extends Component {
               <h2>{ title }</h2>
               <img src={ thumbnail } alt={ title } width="200" />
               <p>{`R$ ${price}`}</p>
+              <button
+                id={ id }
+                type="button"
+                data-testid="product-add-to-cart"
+                onClick={ handleButton }
+              >
+                Comprar
+              </button>
             </div>
           );
         })}
@@ -29,6 +37,7 @@ class Products extends Component {
 
 Products.propTypes = {
   searchResult: PropTypes.arrayOf.isRequired,
+  handleButton: PropTypes.func.isRequired,
 };
 
 export default Products;
