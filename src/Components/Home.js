@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import Products from './Products';
 // import PropTypes from 'prop-types';
 // import Cart from './Cart';
-import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import { getCategories,
+  getProductsFromCategoryAndQuery,
+  getProductsFromCategoryId,
+  getProductsFromQuery } from '../services/api';
 
 class Home extends Component {
   constructor() {
@@ -13,12 +16,15 @@ class Home extends Component {
       inputValue: '',
       searchResult: [],
       cartList: [],
+      isCategorySelected: false,
+      categoryId: '',
     };
 
     this.handleRequest = this.handleRequest.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleButton = this.handleButton.bind(this);
+    this.handleClickCategory = this.handleClickCategory.bind(this);
   }
 
   componentDidMount() {
@@ -38,10 +44,25 @@ class Home extends Component {
   }
 
   async handleClick() {
-    const { inputValue } = this.state;
-    const requestApi = await getProductsFromCategoryAndQuery(undefined, inputValue);
+    const { inputValue, isCategorySelected, categoryId } = this.state;
+    let requestApi;
+    if (isCategorySelected) {
+      requestApi = await getProductsFromCategoryAndQuery(categoryId, inputValue);
+    } else {
+      requestApi = await getProductsFromQuery(inputValue);
+    }
     this.setState({
       searchResult: requestApi.results,
+    });
+  }
+
+  async handleClickCategory({ target }) {
+    // const { categoryId } = this.state;
+    const requestCategoryApi = await getProductsFromCategoryId(target.id);
+    this.setState({
+      searchResult: requestCategoryApi.results,
+      isCategorySelected: true,
+      categoryId: target.id,
     });
   }
 
@@ -53,7 +74,6 @@ class Home extends Component {
 
   render() {
     const { products, inputValue, searchResult, cartList } = this.state;
-
     return (
       <div>
         <form>
@@ -93,11 +113,13 @@ class Home extends Component {
         </form>
         <fieldset>
           { products.map(({ id, name }) => (
-            <label htmlFor={ name } data-testid="category" key={ id }>
+            <label htmlFor={ id } data-testid="category" key={ id }>
               <input
                 type="radio"
                 value={ name }
                 name="name"
+                onClick={ this.handleClickCategory }
+                id={ id }
               />
               { name }
             </label>
