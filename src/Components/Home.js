@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Products from './Products';
 // import PropTypes from 'prop-types';
 // import Cart from './Cart';
-import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+import { getCategories, getProductsFromQuery } from '../services/api';
 
 class Home extends Component {
   constructor() {
@@ -29,7 +29,7 @@ class Home extends Component {
 
   async handleClick() {
     const { inputValue } = this.state;
-    const requestApi = await getProductsFromCategoryAndQuery(undefined, inputValue);
+    const requestApi = await getProductsFromQuery(inputValue);
     this.setState({
       searchResult: requestApi.results,
     });
