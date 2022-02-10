@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Products extends Component {
@@ -12,14 +13,19 @@ class Products extends Component {
         {searchResult.map((products) => {
           const { id, title, thumbnail, price } = products;
           return (
-            <div
+            <Link
+              to={ `/product/${id}` }
+              data-testid="product-detail-link"
               key={ id }
-              data-testid="product"
             >
-              <h2>{ title }</h2>
-              <img src={ thumbnail } alt={ title } width="200" />
-              <p>{`R$ ${price}`}</p>
-            </div>
+              <div
+                data-testid="product"
+              >
+                <h2>{ title }</h2>
+                <img src={ thumbnail } alt={ title } width="200" />
+                <p>{`R$ ${price}`}</p>
+              </div>
+            </Link>
           );
         })}
       </div>
