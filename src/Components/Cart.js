@@ -30,7 +30,6 @@ class Cart extends Component {
 
 Cart.propTypes = {
   cartList: PropTypes.arrayOf.isRequired,
-
 };
 
 export default Cart;
