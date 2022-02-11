@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 class Cart extends Component {
   render() {
     const { cartList } = this.props;
+    if (cartList.length === 0) {
+      return (<p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>);
+    }
     return (
       <div>
         { cartList.map((element) => {
