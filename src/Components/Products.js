@@ -26,10 +26,13 @@ class Products extends Component {
                 <p>{`R$ ${price}`}</p>
               </Link>
               <button
+                name={ price }
                 id={ id }
+                title={ title }
+                className={ thumbnail }
+                onClick={ handleButton }
                 type="button"
                 data-testid="product-add-to-cart"
-                onClick={ handleButton }
               >
                 Comprar
               </button>
