@@ -65,6 +65,7 @@ class App extends Component {
       thumbnail: target.className,
       qtd: 1,
     };
+
     const copy = [...cartList];
     const tentative = cartList.findIndex((element) => (element.id === obj.id));
     if (tentative === TENTATIVE_NUMBER) {
@@ -82,16 +83,17 @@ class App extends Component {
   render() {
     const { cartList } = this.state;
     return (
-
       <BrowserRouter>
         <Route
           exact
           path="/"
-          render={ (props) => (<Home
-            { ...props }
-            cartList={ cartList }
-            handleButton={ this.handleButton }
-          />) }
+          render={ (props) => (
+            <Home
+              { ...props }
+              cartList={ cartList }
+              handleButton={ this.handleButton }
+            />
+          ) }
         />
         <Route
           exact
@@ -105,9 +107,18 @@ class App extends Component {
             handleDecreaseButton={ this.handleDecreaseButton }
           />) }
         />
-        <Route exact path="/product/:id" component={ ProductDetails } />
+        <Route
+          exact
+          path="/product/:id"
+          render={ (props) => (
+            <ProductDetails
+              { ...props }
+              cartList={ cartList }
+              handleButton={ this.handleButton }
+            />
+          ) }
+        />
       </BrowserRouter>
-
     );
   }
 }
