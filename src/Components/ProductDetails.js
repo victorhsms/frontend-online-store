@@ -33,45 +33,43 @@ class ProductDetails extends Component {
       price,
       attributes,
     });
-    console.log(attributes);
   }
 
   render() {
-    const { title, thumbnail, price, attributes } = this.state;
+    const { handleButton } = this.props;
+    const { id, title, thumbnail, price, attributes } = this.state;
     return (
       <div>
         <div>
-          <Link
-            to="/cart"
-            data-testid="shopping-cart-button"
-          >
+          <Link to="/cart" data-testid="shopping-cart-button">
             <li>CART</li>
           </Link>
         </div>
         <h2>
-          <spam
-            data-testid="product-detail-name"
-          >
-            { title }
-          </spam>
+          <spam data-testid="product-detail-name">{ title }</spam>
           { ` - R$ ${price}` }
         </h2>
         <img src={ thumbnail } alt={ title } />
         <div>
           <h3>Especificações Técnicas:</h3>
           <ul>
-            {attributes.map((attribute) => {
-              const { id, name } = attribute;
-              return (
-                <li
-                  key={ id }
-                >
-                  { `${name}: ${attribute.value_name}` }
-                </li>
-              );
-            })}
+            { attributes.map((attribute) => (
+              <li key={ attribute.id }>
+                { `${attribute.name}: ${attribute.value_name}` }
+              </li>))}
           </ul>
         </div>
+        <button
+          name={ price }
+          id={ id }
+          title={ title }
+          className={ thumbnail }
+          onClick={ handleButton }
+          data-testid="product-detail-add-to-cart"
+          type="submit"
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     );
   }
@@ -80,6 +78,7 @@ class ProductDetails extends Component {
 ProductDetails.propTypes = {
   match: PropTypes.objectOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
+  handleButton: PropTypes.func.isRequired,
 };
 
 export default ProductDetails;
