@@ -26,36 +26,47 @@ class App extends Component {
     };
     this.setState({
       cartList: [...cartList, obj],
-    }); console.log(cartList);
-    console.log(target);
+    });
   }
 
   render() {
     const { cartList } = this.state;
     return (
-
       <BrowserRouter>
         <Route
           exact
           path="/"
-          render={ (props) => (<Home
-            { ...props }
-            cartList={ cartList }
-            handleButton={ this.handleButton }
-          />) }
+          render={ (props) => (
+            <Home
+              { ...props }
+              cartList={ cartList }
+              handleButton={ this.handleButton }
+            />
+          ) }
         />
         <Route
           exact
           path="/cart"
-          render={ (props) => (<Cart
-            { ...props }
-            cartList={ cartList }
-            handleButton={ this.handleButton }
-          />) }
+          render={ (props) => (
+            <Cart
+              { ...props }
+              cartList={ cartList }
+              handleButton={ this.handleButton }
+            />
+          ) }
         />
-        <Route exact path="/product/:id" component={ ProductDetails } />
+        <Route
+          exact
+          path="/product/:id"
+          render={ (props) => (
+            <ProductDetails
+              { ...props }
+              cartList={ cartList }
+              handleButton={ this.handleButton }
+            />
+          ) }
+        />
       </BrowserRouter>
-
     );
   }
 }
