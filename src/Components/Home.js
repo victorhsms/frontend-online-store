@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Products from './Products';
-// import PropTypes from 'prop-types';
 // import Cart from './Cart';
 import { getCategories,
   getProductsFromCategoryAndQuery,
@@ -15,7 +15,6 @@ class Home extends Component {
       products: [],
       inputValue: '',
       searchResult: [],
-      cartList: [],
       isCategorySelected: false,
       categoryId: '',
     };
@@ -23,19 +22,11 @@ class Home extends Component {
     this.handleRequest = this.handleRequest.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleButton = this.handleButton.bind(this);
     this.handleClickCategory = this.handleClickCategory.bind(this);
   }
 
   componentDidMount() {
     this.handleRequest();
-  }
-
-  handleButton({ target }) {
-    const { cartList } = this.state;
-    this.setState({
-      cartList: [...cartList, target.id],
-    });
   }
 
   async handleRequest() {
@@ -73,7 +64,8 @@ class Home extends Component {
   }
 
   render() {
-    const { products, inputValue, searchResult, cartList } = this.state;
+    const { products, inputValue, searchResult } = this.state;
+    const { handleButton, cartList } = this.props;
     return (
       <div>
         <form>
@@ -94,7 +86,7 @@ class Home extends Component {
           <Products
             searchResult={ searchResult }
             cartList={ cartList }
-            handleButton={ this.handleButton }
+            handleButton={ handleButton }
           />
           <h1
             data-testid="home-initial-message"
@@ -131,6 +123,8 @@ class Home extends Component {
 }
 
 Home.propTypes = {
+  handleButton: PropTypes.func.isRequired,
+  cartList: PropTypes.arrayOf.isRequired,
 
 };
 
