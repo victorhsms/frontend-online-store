@@ -65,7 +65,7 @@ class Home extends Component {
 
   render() {
     const { products, inputValue, searchResult } = this.state;
-    const { handleButton, cartList } = this.props;
+    const { handleButton, cartList, itemCount } = this.props;
     return (
       <div>
         <form>
@@ -101,6 +101,7 @@ class Home extends Component {
               <li>CART</li>
 
             </Link>
+            <p data-testid="shopping-cart-size">{ itemCount }</p>
           </div>
         </form>
         <fieldset>
@@ -125,6 +126,7 @@ class Home extends Component {
 Home.propTypes = {
   handleButton: PropTypes.func.isRequired,
   cartList: PropTypes.arrayOf.isRequired,
+  itemCount: PropTypes.number.isRequired,
 
 };
 

@@ -36,7 +36,7 @@ class ProductDetails extends Component {
   }
 
   render() {
-    const { handleButton } = this.props;
+    const { handleButton, itemCount } = this.props;
     const { id, title, thumbnail, price, attributes } = this.state;
     return (
       <div>
@@ -44,9 +44,10 @@ class ProductDetails extends Component {
           <Link to="/cart" data-testid="shopping-cart-button">
             <li>CART</li>
           </Link>
+          <p data-testid="shopping-cart-size">{ itemCount }</p>
         </div>
         <h2>
-          <spam data-testid="product-detail-name">{ title }</spam>
+          <span data-testid="product-detail-name">{ title }</span>
           { ` - R$ ${price}` }
         </h2>
         <img src={ thumbnail } alt={ title } />
@@ -79,6 +80,7 @@ ProductDetails.propTypes = {
   match: PropTypes.objectOf(PropTypes.object).isRequired,
   id: PropTypes.string.isRequired,
   handleButton: PropTypes.func.isRequired,
+  itemCount: PropTypes.number.isRequired,
 };
 
 export default ProductDetails;
