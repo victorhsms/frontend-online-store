@@ -25,19 +25,20 @@ class ProductDetails extends Component {
 
   async searchProduct(id) {
     const productDetails = await getProductsFromProductId(id);
-    const { title, thumbnail, price, attributes } = productDetails;
+    const { title, thumbnail, price, attributes, shipping } = productDetails;
 
     this.setState({
       title,
       thumbnail,
       price,
       attributes,
+      shipping: shipping.free_shipping,
     });
   }
 
   render() {
     const { handleButton, itemCount } = this.props;
-    const { id, title, thumbnail, price, attributes } = this.state;
+    const { id, title, thumbnail, price, attributes, shipping } = this.state;
     return (
       <div>
         <div>
@@ -58,6 +59,9 @@ class ProductDetails extends Component {
               <li key={ attribute.id }>
                 { `${attribute.name}: ${attribute.value_name}` }
               </li>))}
+            <li data-testid="free-shipping">
+              {`Frete gratis: ${shipping ? 'Sim' : 'Não'}`}
+            </li>
           </ul>
         </div>
         <button

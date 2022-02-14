@@ -24,7 +24,6 @@ class App extends Component {
   componentDidMount() {
     const retrieved = getCartBack();
     this.setState({ cartList: retrieved }, () => this.countProducts());
-    console.log(retrieved);
   }
 
   handleDecreaseButton({ target }) {
