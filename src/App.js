@@ -13,17 +13,32 @@ class App extends Component {
     this.state = {
       cartList: [],
       itemCount: 0,
+      emailValue: '',
+      ratingCheck: '',
+      descriptionValue: '',
+      buttonAvaliability: true,
+      allRating: [],
     };
     this.handleButton = this.handleButton.bind(this);
     this.handleRemoveButton = this.handleRemoveButton.bind(this);
     this.handleIncreaseButton = this.handleIncreaseButton.bind(this);
     this.handleDecreaseButton = this.handleDecreaseButton.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.buttonManager = this.buttonManager.bind(this);
+    this.saveRating = this.saveRating.bind(this);
     this.countProducts = this.countProducts.bind(this);
   }
 
   componentDidMount() {
     const retrieved = getCartBack();
     this.setState({ cartList: retrieved }, () => this.countProducts());
+    this.setState({
+      allRating: JSON.parse(localStorage.getItem('allratings')),
+    });
+  }
+
+  componentDidUpdate() {
+    this.buttonManager();
   }
 
   handleDecreaseButton({ target }) {
@@ -87,6 +102,56 @@ class App extends Component {
     }
   }
 
+  handleChange({ target }) {
+    this.setState({
+      [target.name]: target.value,
+    });
+  }
+
+  buttonManager() {
+    const { emailValue, ratingCheck, buttonAvaliability } = this.state;
+    const conditions = [
+      emailValue.length > 0,
+      ratingCheck !== '',
+    ];
+    const allConditions = conditions.every((condition) => condition);
+    if (allConditions && buttonAvaliability) {
+      this.setState({
+        buttonAvaliability: false,
+      });
+    } else if (!allConditions && !buttonAvaliability) {
+      this.setState({
+        buttonAvaliability: true,
+      });
+    }
+  }
+
+  saveRating(event) {
+    event.preventDefault();
+    const { emailValue, ratingCheck, descriptionValue } = this.state;
+    let allRatings;
+    const storage = JSON.parse(localStorage.getItem('allratings'));
+    if (storage === null) {
+      allRatings = [];
+    } else {
+      allRatings = storage;
+    }
+    const rating = {
+      id: event.target.name,
+      email: emailValue,
+      stars: ratingCheck,
+      description: descriptionValue,
+    };
+    allRatings.push(rating);
+    localStorage.setItem('allratings', JSON.stringify(allRatings));
+    this.setState({
+      emailValue: '',
+      ratingCheck: '',
+      descriptionValue: '',
+      allRating: allRatings,
+    });
+  }
+
   countProducts() {
     const { cartList } = this.state;
     let count = 0;
@@ -98,7 +163,15 @@ class App extends Component {
   }
 
   render() {
-    const { cartList, itemCount } = this.state;
+    const {
+      cartList,
+      itemCount,
+      emailValue,
+      ratingCheck,
+      descriptionValue,
+      buttonAvaliability,
+      allRating,
+    } = this.state;
     return (
       <BrowserRouter>
         <Route
@@ -134,6 +207,13 @@ class App extends Component {
               cartList={ cartList }
               itemCount={ itemCount }
               handleButton={ this.handleButton }
+              emailValue={ emailValue }
+              ratingCheck={ ratingCheck }
+              descriptionValue={ descriptionValue }
+              buttonAvaliability={ buttonAvaliability }
+              handleChange={ this.handleChange }
+              saveRating={ this.saveRating }
+              allRatings={ allRating }
             />
           ) }
         />
